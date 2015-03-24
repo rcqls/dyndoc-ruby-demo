@@ -1,4 +1,5 @@
 *.log
+*.dyn_log
 *.aux
 *.pdf
 *.tex
@@ -6,4 +7,5 @@
 *.snm
 *.toc
 *.out
+*.jpg
 rsrc/*

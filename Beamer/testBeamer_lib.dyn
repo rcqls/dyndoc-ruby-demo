@@ -14,6 +14,12 @@
 [#=]beamerCfg.colorTheme[wolverine]
 [#=]beamerCfg.fontTheme[structureitalicserif]
 [#require]RCqls/Beamer
+[#package]
+\usepackage{tikz}
 [#preamble]
 \newcommand{\RS}{{\texttt{R}~}}
 \beamertemplateshadingbackground{purple!30}{yellow!40}
+\usebackgroundtemplate{%
+\tikz[overlay,remember picture] \node[opacity=0.3, at=(current page.center)] {
+   \includegraphics[height=\paperheight,width=\paperwidth]{fisher}};
+}

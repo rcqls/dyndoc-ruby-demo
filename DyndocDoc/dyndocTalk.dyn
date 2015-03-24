@@ -2,7 +2,8 @@
 [#=]beamerCfg.colorTheme[wolverine]
 [#=]beamerCfg.fontTheme[structureitalicserif]
 [#require]RCqls/Beamer
-Tools/Tex/Verb
+RCqls/TexInputs/Cqls
+RCqls/TexInputs/CqlsInputs
 ExampleCode
 [#title]
 \beamertemplateshadingbackground{red!30}{yellow!40}
