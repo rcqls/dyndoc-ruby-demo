@@ -1,0 +1,15 @@
+[#require]Tools/Tex/Verb
+[#package]
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{longtable}
+\usepackage[T1]{fontenc}
+\usepackage[scaled]{beramono}
+[#main]
+[#<<]dyndocCode.dyn
+[#rb>]
+pages=["rpng","hello","blck_tags","vars","array_list","if-case","loop","def"]
+nb=pages.length	
+for i in 1..nb do
+{#>]{#testDynCode]:{pages[i-1]}[#render]dawn[#}[#>}
+end

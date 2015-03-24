@@ -1,0 +1,527 @@
+[#=]beamerCfg.theme[Boadilla]
+[#=]beamerCfg.colorTheme[wolverine]
+[#=]beamerCfg.fontTheme[structureitalicserif]
+[#=]beamerCfg.toc[currentsection,hideothersubsections]
+[#require]
+RCqls/TexInputs/Cqls
+RCqls/TexInputs/CqlsInputs
+Tex/Fr
+Tex/11pt
+RCqls/Beamer
+RCqls/R/Fig
+RCqls/Tex/FilterR
+Tools/Tex/Verb
+ExampleCode
+[#title]
+\beamertemplateshadingbackground{red!30}{yellow!40}
+\title{Projet R-Dyndoc}
+
+\author{R. Drouilhet}
+\institute{Cqls Team}
+\date{ }
+[#package]
+\usepackage{xmpmulti}
+%\usepackage{multimedia}
+\usepackage{bbm}
+\usepackage{bm}
+\usepackage{mathrsfs,dsfont}
+\usepackage{fancyvrb}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{longtable}
+\usepackage[T1]{fontenc}
+\usepackage[scaled]{beramono}
+[#preamble]
+\newcommand{\RS}{{\texttt{R}~}}
+\newcommand{\Sim}{{\star}}
+\def\doint{\displaystyle\oint}
+\definecolor{show}{rgb}{#R{round(c(150,75,150)/256,2)}}
+\definecolor{beaubleu}{rgb}{0.26,0.31,0.61}
+\definecolor{beauvert}{rgb}{0.27,0.52,0.42}
+[#main][#<]
+[#tag]last[#=]docs[hellos]
+[#tag]test[#=]docs[hello_code,case_code,loop_code,rverb,sweave]
+[#tag]expose[#=]docs[section_motiv,motiv,section_demo,hello_code,hellolib_code,hellos,rverb,sweave,section_envir,envir_code,section_vars,vars_code,section_program,case_code,loop_code,section_adv,advanced,knitr,section_descr,descr,section_use,use,esprit]
+[#tag]end
+[#=]result[Résultat]
+[#<]
+{#InitStyle#}
+[#=]showCol[{violet}]
+[#=]scaleMS[.28]
+[#r<]options(width=70)
+require(EBSpat)
+[#<]{#def]beameR[#,]rcode[][#>]{#peteR][#_optLst][<<fontsize[\scriptsize]][#graph.before][\vspace*{-1.4cm}][#graph.after][\vspace*{-1.4cm}][#rcode]#{rcode}[#}[#}
+[#<] Les codes dyndoc pour la demo
+{#code]Hello[#dyn]
+[#R<] mister <- "misteR" #R code
+[#rb<] mister = "mister" #ruby code
+[#<] This is not output!
+	{#def]hello[#,]name[Miss][#>]
+		[hello #{name}]
+	[#}
+[#>]
+		[from Dyn, {#hello#}
+		|from Dyn, {#hello]Mister[#}
+		|from ruby, hello :{mister}
+		|from R, hello :r{mister}]
+[#code}
+
+{#code]HelloTex[#dyn]
+[#R<] mister <- "misteR" #R code
+[#rb<] mister = "mister" #ruby code
+[#<] This is not output!
+	{#def]hello[#,]name[Miss][#>]
+		[hello \textbf{#{name}}]
+	[#}
+[#>]
+		[from Dyn, {#hello#}\\
+		|from Dyn, {#hello]Mister[#}\\
+		|from ruby, hello \textit{:{mister}}\\
+		|from R, hello \underline{:r{mister}}]
+[#code}
+
+{#code]HelloTxtl[#dyn]
+[#R<] mister <- "misteR" #R code
+[#rb<] mister = "mister" #ruby code
+[#<] This is not output!
+	{#def]hello[#,]name[Miss][#>]
+		[hello *#{name}*]
+	[#}
+[#txtl>]
+		[from Dyn, {#hello#}
+		|from Dyn, {#hello]Mister[#}
+		|from ruby, hello __:{mister}__
+		|from R, hello +:r{mister}+]
+[#code}
+
+{#code]HelloLib[#dyn]
+[#require]helloLib
+[#main][#R<] mister <- "misteR" #R code
+[#rb<] mister = "mister" #ruby code
+[#>]
+		[from Dyn, {#hello#}
+		|from Dyn, {#hello]Mister[#}
+		|from ruby, hello :{mister}
+		|from R, hello :r{mister}]
+[#code}
+
+{#code]case[#dyn]
+[#=] docs [part2,part3,part1]
+[#>]{#case]#{docs}
+	[#when]part1[#>]Partie~I
+	[#when]part2[#>][Partie~II<\n>]
+	[#when]part3[#>]Partie~III
+	[#}
+[#code}
+
+{#code]loopR[#dyn]
+[#>]Loop in R:
+[#R>]
+for(cpt in 1:4) {#>]item:r{cpt-1} [#>}
+[#>]<\n>but also,
+[#R>] sapply(5:8,function(cpt) {
+	cpt <- cpt -1
+	{#>]item#r{cpt} [#>}
+})
+[#code}
+
+{#code]loopRuby[#dyn]
+[#>]Loop in ruby:
+[#rb>]
+for cpt in 1..4 do
+	{#>]item:{cpt-1} [#>}
+end
+[#>]<\n>but also,
+[#rb>] (5..8).each do |cpt| 
+	cpt=cpt-1
+	{#>]item#rb{cpt} [#>}
+end
+[#code}
+
+{#code]vars[#dyn]
+[#=]toto[TOTO] [#>] [#{toto}|]
+[#>]toto+[ and TITI] [#>] [#{toto}|]
+[#=]toto[TOTO2][#>] [#{toto} AND ]
+[#=]toto@[[1,3,2]] [#>] [#{toto@} AND ]
+[#=]toto$[c(1,3,2)] [#>]#{toto$} [#\n][#rb<]
+<toto@>[0]= <toto@>.inject(0) { |s,v| s += v }
+<toto:> = <toto:>.downcase
+<toto[1]$> = <toto$>.inject(0) { |s,v| s += v }
+[#>]After ruby: #{toto} AND #{toto@} AND #{toto$}
+[#R<]<toto@>[1]= 1L
+<toto:> = toupper(<toto:>);<toto$>[1] = 1
+[#>]After R: #{toto} AND #{toto@} AND #{toto$}
+[#code}
+
+[#>]
+{#case]#{docs}
+[#when]section_demo[#>]
+\section{Découverte de \texttt{dyndoc} par des exemples}
+[#when]hello_code[#>]{#VerbFrame][#>]\noindent \textbf{L'habituel ``Hello code"}~:
+{#testDynCode]Hello[#render]blackboard[#}
+[#VerbFrame}
+[#when]hellolib_code[#>]{#VerbFrame][#>]\noindent \textbf{Le ``Hello code" avec librairie}~:
+
+Le code ci-dessous étant le contenu du fichier \verb!helloLib.dyn!
+{#uvTex][#file]helloLib.dyn[#render]dawn[#}
+le code dyndoc suivant donne le même résultat que précédemment~:
+{#uvTex][#key]HelloLib[#render]blackboard[#}
+[#VerbFrame}
+[#when]hellos[#>]{#VerbFrame][#>]\noindent \textbf{L'habituel ``Hello code" en \texttt{latex}}~:
+{#testDynCode]HelloTex[#render]blackboard[#}
+[#VerbFrame}
+
+{#VerbFrame][#>]\noindent \textbf{L'habituel ``Hello code" en \texttt{latex}}~:
+{#testDynCode]HelloTex[#render]blackboard[#raw]true[#}
+[#VerbFrame}
+
+{#VerbFrame][#>]\noindent \textbf{L'habituel ``Hello code" en \texttt{latex} via \texttt{textile}}~:
+{#testDynCode]HelloTxtl[#render]blackboard[#}
+[#VerbFrame}
+[#when]section_envir[#>]
+\section{Programmation~: environnements \RS et \texttt{ruby}}
+[#when]envir_code[#>]
+[#R<]options(width=50)[#>]
+
+{#VerbFrame][#>]\noindent \textbf{Equivalent \texttt{Sweave} (par défaut)}~:
+{#testDynCode]rverbCode[#render]solarized[#raw]true[#}
+[#VerbFrame}
+
+{#VerbFrame][#>]\noindent \textbf{Equivalent \texttt{Sweave (echo=FALSE,results='hide')}  et \texttt{\symbol{92}Sexpr}}~:
+{#testDynCode]RInCode[#render]solarized[#}
+[#VerbFrame}
+
+{#VerbFrame][#>]\noindent \textbf{Idem en \texttt{ruby} }~:
+{#testDynCode]RbInCode[#render]blackboard[#}
+[#VerbFrame}
+
+
+{#VerbFrame][#>]\noindent \textbf{Equivalent \texttt{Sweave (echo=FALSE)} }~:
+{#testDynCode]ROutCode[#render]solarized[#}
+[#VerbFrame}
+
+{#VerbFrame][#>]\noindent \textbf{Idem en \texttt{ruby} }~:
+{#testDynCode]RbOutCode[#render]blackboard[#}
+[#VerbFrame}
+
+[#when]section_vars[#>]
+\section{Programmation~: variables \texttt{dyndoc}}
+[#when]vars_code[#>]
+{#VerbFrame][#>]\noindent \textbf{Variables \texttt{dyndoc}}~:
+{#testDynCode]varsDyndoc[#render]blackboard[#}
+[#VerbFrame}
+
+{#VerbFrame][#>]\noindent \textbf{Variables \texttt{dyndoc} pour \RS et \texttt{ruby}}~:
+{#testDynCode]varsR[#render]solarized[#}
+[#VerbFrame}
+[#%]Needs to be initialized first for the next two tests!
+[#=]toto[TOTO]
+[#=]toto@[[1,3,2]]
+[#=]toto$[c(1,3,2)]
+[#>]
+{#VerbFrame][#>]\noindent \textbf{Utiliser ces variables en \RS}~:
+{#testDynCode]inRCode[#render]solarized[#}
+[#VerbFrame}
+
+{#VerbFrame][#>]\noindent \textbf{Utiliser ces variables en \texttt{ruby}}~:
+{#testDynCode]inRbCode[#render]blackboard[#}
+[#VerbFrame}
+
+[#when]section_program[#>]
+\section{Programmation~: condition, sélection et boucles}
+[#when]case_code[#>]
+{#VerbFrame][#>]\noindent \textbf{Instruction \texttt{if} (mode imbriqué)}~:
+{#testDynCode]ifTag[#render]solarized[#}
+\noindent \textbf{Instruction \texttt{if} (mode séquentiel)}~:
+{#testDynCode]ifSeqTag[#render]solarized[#}
+[#VerbFrame}
+
+{#VerbFrame][#>]\noindent \textbf{Instruction \texttt{if} en \RS}~:
+{#testDynCode]ifRCode[#render]solarized[#}
+\noindent \textbf{Instruction \texttt{if} en \texttt{ruby}}~:
+{#testDynCode]ifRbCode[#render]blackboard[#}
+[#VerbFrame}
+
+{#VerbFrame][#>]\noindent \textbf{Instruction \texttt{case}}~:
+{#testDynCode]caseTag[#render]blackboard[#}
+[#VerbFrame}
+
+{#VerbFrame][#>]\noindent \textbf{L'équivalent en \RS (même si pas trop d'intérêt, ici)}~:
+{#testDynCode]caseRCode[#render]solarized[#}
+[#VerbFrame}
+
+{#VerbFrame][#>]\noindent \textbf{L'équivalent en \texttt{ruby} (même si pas trop d'intérêt, ici)}~:
+{#testDynCode]caseRbCode[#render]blackboard[#}
+[#VerbFrame}
+
+[#when]loop_code[#>]{#VerbFrame][#>]\noindent \textbf{Boucles directement en \RS}~:
+{#testDynCode]loopR[#render]solarized[#}
+[#VerbFrame}
+
+{#VerbFrame][#>]\noindent \textbf{Boucles directement en \texttt{ruby}}~:
+{#testDynCode]loopRuby[#render]blackboard[#}
+[#VerbFrame}
+[#when]section_adv[#>]
+\section{Exemples plus avancés}
+[#when]advanced[#>]
+
+{#code]lmLib[#dyn]
+{#meth]new.Data[#,] .objR[] [#,].rdata[] [#<][#}
+
+{#meth]begin.Data
+  [#yield]default
+  [#rb>].rdata[#{=.rdata}.strip]
+  [#rb>].objR[#{=.objR}.strip]
+  [#?]#{+?.rdata}[#r<]attach('#{.rdata}')
+  [#?]#{+?.objR}[#r<]attach(#{.objR})
+[#}
+
+{#meth]end.Data
+  [#?]#{+?.objR}[#r<]detach(#{.objR})
+  [#?]#{+?.rdata}[#r<]detach('file:#{.rdata}')[#?]end
+  [#yield]default
+[#}
+[#code}
+
+{#code]lmNew[#dyn]
+[#require]RCqls/LM/lm[#main][#<]
+{#new]data[#of]Data[#in]lm1
+[#,]chomage[#,]~/cqls/data/chomage.RData[#}
+{#new]lm1[#of]LM[#in]lm1
+[#,]chom~txpib+deppub+pfisc[#,]:data[#}
+[#>]{#summary]lm1[#}
+[#<]{#end]lm1[#}
+[#code}
+
+
+{#VerbFrame][#>]\noindent \textbf{Libraries d'objets \texttt{dyndoc} (ici classe \texttt{Data})}~:
+{#uvTex][#key]lmLib[#render]solarized[#raw]true[#}
+[#VerbFrame}
+
+[#%]problem avec yield default avec plusieurs niveaux
+[#=]resLM[{#dyn]test|lmNew[#}][#>]
+
+{#VerbFrame][#>]\noindent \textbf{Déclaration d'objets et appels de méthodes}~:
+{#uvTex][#key]lmNew[#render]solarized[#raw]true[#}
+\noindent \textbf{#{result}}:\\
+#{resLM}
+[#VerbFrame}
+
+{#code]statinf[#dyn]
+[#require]RCqls/StatInf/HypoTest[#main][#<]
+{#new]pChom[#of]ParamFrame[#in]pChom[#,]p[#,]asymp
+[#.nomPb]C[#.thetaEstR]16/200[#.ny]200[#}
+
+{#new]pChomTest[#of]TestParam[#in]pChom[#,]:pChom
+[#.theta0R]0.1[#.theta0Tex]10\%[#.side]<
+[#.assertion]le taux de chômage en France serait
+cette année inférieur à $10\%$[#}
+[#>]{#redaction]pChomTest[#,]a[#}
+[#code}
+
+[#=]resStatInf[{#dyn]test|statinf[#}][#>]
+
+{#VerbFrame][#>]\noindent \textbf{Rédaction abrégée d'un hypothèse de test}~:
+{#uvTex][#key]statinf[#render]solarized[#raw]true[#}
+\noindent \textbf{#{result}}:\\
+{\small #{resStatInf}}
+[#VerbFrame}
+
+{#VerbFrame][#>]\noindent \textbf{Flag + environnement R + Paramètre nommé}~:
+{#testDynCode]rverb2Code[#render]solarized[#raw]true[#}
+[#VerbFrame}
+
+[#when]rverb[#<]
+Le code dyn exécuté juste après et placé ici pour pouvoir l'afficher via #dynCode
+{#code]rverb[#dyn]{#VerbFrame]
+[#>]\noindent \textbf{Session \texttt{R}}~:
+	{#beameR]
+	y<-rnorm(10)
+	y
+	plot(1:10,y,col=1:10)
+	##fig | img=test | opt=width=7cm
+	rexp(10)
+	[#beameR}
+[#VerbFrame}
+[#code}
+[#>]
+{#VerbFrame][#>]Le code \texttt{dyndoc} suivant~:
+{#uvTex]
+{#dynCode]rverb[#}[#render]solarized[#uvTex}
+permet à un simple utilisateur de générer la page \texttt{beamer} suivante (modulo la définition des fonctions \texttt{VerbFrame} et \texttt{beameR} en mode développeur \texttt{dyndoc})~:
+[#VerbFrame}
+
+{#VerbFrame][#>]
+\noindent \textbf{Session \texttt{R}}~:
+{#beameR]
+y<-rnorm(10)
+y
+plot(1:10,y,col=1:10)
+##fig | img=test | opt=width=7cm
+rexp(10)
+[#beameR}[#VerbFrame}
+
+[#when]sweave[#<]{#code]sweave1[#dyn]
+{#rverb]
+a<-c(1,3,2)
+a
+[#}
+La moyenne est :r{mean(a)}.
+[#code}
+[#>]{#BeamerFrame]Exemple \texttt{Sweave} (très basique)[#>]
+{#uvTex]
+\documentclass{article}
+\begin{document}
+<<>>=
+a<-c(1,3,2)
+a
+@
+La moyenne est \Sexpr{mean(a)}.
+\end{document}
+[#syntax]text.tex.latex.sweave[#render]dawn[#}
+\noindent \textbf{Son équivalent \texttt{dyndoc}}~:
+{#uvTex]{#dynCode]sweave1[#}[#render]solarized[#}
+\noindent \textbf{N.B.} pas d'entête latex grâce à un système de ``layout".
+[#BeamerFrame}
+
+[#when]knitr[#>]
+
+{#code]sweave2[#dyn]
+[#R>] for(i in c(5,6)) {
+	{#>]{#knitr]
+	|<<>>=
+	|rnorm(:r{i})
+	|@
+	|[#knitr}[#>}
+
+	if(i==6) {#>]{#knitr]
+	|<<fig,echo=FALSE,out.width='.3\\linewidth'>>=
+	|plot(1::r{i},rnorm(:r{i}),type='l',lwd=5)
+	|@
+	[#knitr}[#>}
+}
+[#code}
+
+{#BeamerFrame]Intégrer \texttt{knitr} (et \texttt{Sweave})[#>]
+{#uvTex][#key]sweave2[#render]solarized[#}
+[#BeamerFrame}
+
+{#VerbFrame]Résultat :[#>]
+{#dyn]test|sweave2[#}
+[#VerbFrame}
+
+[#when]section_motiv[#>]
+\section{Motivation}
+[#when]motiv[#>]
+{#BeamerFrame]Motivation initiale pour le projet \texttt{dyndoc}[#>]
+\begin{block}{A l'origine, (il y a plus de 15 ans)}
+\begin{itemize}
+\item \textbf{Enseignement~:}  gain de temps lors de la rédaction des sujets d'examens et préparation de documents de cours\\
+$\Rightarrow$ Marre du copier-coller-modifier et du ``je sais plus où c'est!"
+\item \textbf{Consulting statistique~:} idée de proposer des outils de génération automatique de rapports en intégrant les résultats extraits de traitements {\RS}.
+\end{itemize}
+{#hide]\begin{itemize}
+\item \textbf{Enseignement~:}  économie de temps lors de la rédaction des sujets d'examens.
+\item \textbf{Consulting statistique~:} idée de proposer des outils de génération automatique de rapports en intégrant les résultats extraits de traitements \RS.
+\item \textbf{Programmation~:}  mariage de plusieurs langages de natures complémentaires~:
+\end{itemize}
+[#hide}
+\end{block}
+
+\begin{block}{Puis, (il y a $\simeq$ 10 ans)}
+\begin{itemize}
+\item \textbf{Programmation~:}  création d'un langage de type ``chef d'orchestre"
+\begin{enumerate}
+\item dédié à la manipulation de contenu de {\large\textbf{doc}}ument  \texttt{latex}, \texttt{html}, ... \\
+$\Rightarrow$ pas besoin de manipulation de \texttt{print} et \texttt{"..."}
+\item utilisant tel quel (``as is") plusieurs langages (\RS, \texttt{ruby}, ...) aux caractéristiques complémentaires pour {\large\textbf{dyn}}amiser le contenu.
+\end{enumerate}
+\end{itemize}
+{#hide]\begin{itemize}
+\item \textbf{Enseignement~:}  économie de temps lors de la rédaction des sujets d'examens.
+\item \textbf{Consulting statistique~:} idée de proposer des outils de génération automatique de rapports en intégrant les résultats extraits de traitements \RS.
+\item \textbf{Programmation~:}  mariage de plusieurs langages de natures complémentaires~:
+\end{itemize}
+[#hide}
+\end{block}
+[#}
+
+
+
+[#when]motiv2[#>]
+{#BeamerFrame]Projet \texttt{dyndoc}[#>]
+\begin{block}{Puis, ...}
+\begin{itemize}[<+->]
+\item Découverte de langages de programmation comme \texttt{python} et \texttt{ruby} (mon préféré). Parmi les avantages~: maintenance des codes, facilité de création d'exécutable, syntaxe simple pour la manipulation de chaînes de  caractères....
+\item Découverte de \texttt{Sweave} (et son langage \texttt{noweb}) permettant d'intégrer des résultats issus du \RS dans du code \texttt{latex}.
+\item Initiation au développement web où les langages de templating sont très courants (ex: en \texttt{ruby}, le langage \texttt{eruby} permet de dynamiser les pages \texttt{html}).
+\item Création d'une librairie \texttt{ruby} intégrant le \RS dans un programme \texttt{ruby} et permettant d'échanger très facilement les contenus de tableaux (\texttt{Array}) en \texttt{ruby} avec les vecteurs (\texttt{vector}) en \RS.
+\end{itemize}
+\end{block}
+[#}
+
+{#BeamerFrame]Projet \texttt{dyndoc}[#>]
+\begin{block}{Et maintenant, \texttt{dyndoc} c'est un~:}
+\begin{itemize}[<+->]
+\item \textbf{système de modèles (``templating system")~:} basé sur un langage de balise (de type ``domino") comparable au langage \texttt{xml}, s'intègrant dans un document au format ``human readable" tel que \texttt{latex}, \texttt{html}, ... mais aussi tout fichier source d'un langage de programmation tel le \RS, \texttt{ruby}, \texttt{C}, ...
+\item \textbf{langage (de script)~:} permettant aussi d'intégrer les langages \texttt{ruby} et \RS (avec possibilité d'intégration de \texttt{python} et tout autre langage étant interfaçable en \texttt{C}).
+\end{itemize}
+\end{block}
+[#}
+
+[#when]section_descr[#>]
+\section{\texttt{dyndoc} en résumé}
+[#when]descr[#>]
+{#BeamerFrame]En résumé, \texttt{dyndoc} c'est[#>]
+Un outil développé en \texttt{ruby} avec pour principales caractéristiques~:
+\begin{itemize}
+\item \textbf{système de modèles (``templating system")~:} basé sur un langage de balises (de type ``domino") suffisamment exotique pour s'intègrer facilement dans tout document au format ``human readable" (tel que \texttt{latex}, \texttt{html}, ...) afin d'en dynamiser le contenu.
+\item \textbf{langage (de script)~:} permettant d'intégrer pleinement les langages \texttt{ruby}, \RS et \texttt{Mathematica} (expérimental) et éventuellement \texttt{python} ou tout autre langage interfaçable en \texttt{C}.
+\end{itemize}
+[#BeamerFrame}
+{#BeamerFrame]Principaux avantages[#>]
+\begin{itemize}
+\item \textit{mode développeur}: créer des librairies regroupant fonctions et objets \texttt{dyndoc} (dédiés à la génération de parties textuelles relatives à certaines expertises)
+\item \textit{mode utilisateur}: rassembler dans un même document \texttt{dyndoc} à la fois les dernières étapes des analyses statistiques (fait avec \RS, \texttt{ruby} et \texttt{Mathematica}) ainsi que le contenu textuel.
+A partir de ce document \texttt{dyndoc}, permettre de générer un ou plusieurs documents finaux dans différents formats (\texttt{latex}, \texttt{html}, ...).
+\end{itemize}
+[#BeamerFrame}
+
+[#when]section_use[#>]\section{Modes d'utilisation}
+[#when]use[#>]
+
+{#VerbFrame]Modes d'utilisation de \texttt{dyndoc}[#>]
+
+\begin{itemize}
+\item \textbf{Ligne de commande en version autonome~:} (sans hors-connexion)\\
+\verb!dyndoc-ruby [options] all [options] document.dyn!
+\item \textbf{Ligne de commande en version client-serveur~:}\\
+\verb!dyndoc-client all dyn://sag6/document.dyn!
+
+client (léger) se connectant à un serveur \texttt{dyndoc} pour traitement de petit projet (pas un livre sur \RS!)\\
+\item \textbf{Interface web}~: (hors-connexion)
+\verb!dyndoc-web [start|stop|status]!
+
+dédié à la création de documents \texttt{html5} incluant du \texttt{javascript} pour dynamiser les traitements (en particulier, graphique).
+\item \textbf{Interface web}~: (connexion server)\\
+Zéro install, dédié à la création  en ligne de pages web (ou documents pdf) avec possibilité de proposer directement des traitements \RS.
+\end{itemize}
+[#}
+
+[#when]esprit[#>]
+{#VerbFrame]Informations complémentaires[#>]
+\noindent\textbf{Page web \texttt{dyndoc}}
+
+\begin{center}\verb!http://dyndoc.upmf-grenoble.fr/Dyndoc.html!\end{center}
+
+\vspace*{1cm}
+
+
+\noindent\textbf{Esprit du projet}~:
+\begin{itemize}
+\item \textit{sur un plan général} : \texttt{dyndoc} est né d'une quête de sens, d'une mise en veille de l'égo,
+d'un éveil de conscience,  de l'envie de partager des valeurs
+\item \textit{sur un plan plus pratique} : \texttt{dyndoc} c'est une tentative de participer au développement d'une activité (ici, autour du reporting statistique) dans un but de regrouper une communauté  (ici, de développeurs, d'utilisateurs) où la dimension sociale prévaudrait.
+\end{itemize}
+[#}
+[#case}

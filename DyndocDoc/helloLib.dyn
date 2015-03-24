@@ -1,0 +1,5 @@
+No output inside a library
+
+{#def]hello[#,]name[Miss][#>]
+	[Hello #{name}]
+[#}

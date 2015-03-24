@@ -1,0 +1,22 @@
+ [#require]Tools/Tex/Verb
+ [#main][#>]toto
+ [#R>]
+ for(i in c(5,6)) {
+	{#>]{#knitr]
+	|<<>>=
+	|rnorm(:r{i})
+	|@
+	|[#knitr}[#>}
+
+	if(i==6) {#>]{#knitr]
+	|<<fig,echo=FALSE,out.width='.3\\linewidth'>>=
+	|plot(1::r{i},rnorm(:r{i}),type='l',lwd=5)
+	|@
+	[#knitr}[#>}
+}
+[#>]
+{#knitr]
+<<>>=
+rnorm(100)
+@
+[#knitr}
