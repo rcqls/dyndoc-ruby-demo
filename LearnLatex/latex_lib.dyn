@@ -1,0 +1,18 @@
+[#cfg]
+:docs=>{
+	"complet" => {
+		:tag=>["complet"]
+	},
+	"minipage"=> {
+    	:tag=>["minipage"],
+    	:append_doc=>"_minipage"
+  	},
+  	"table"=> {
+    	:tag=>["table"],
+    	:append_doc=>"_table"
+  	},
+  	"fig"=> {
+    	:tag=>["fig"],
+    	:append_doc=>"_fig"
+  	}
+}

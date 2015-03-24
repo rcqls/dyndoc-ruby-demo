@@ -1,0 +1,19 @@
+[#cfg]
+:docs=>{
+  "complet" => {
+    :tag => ["complet"],
+    :append_doc => "_complet"
+  },
+  "courant" => {
+    :tag => ["courant"],
+    :append_doc => "_courant"
+  }
+
+}
+[#=]beamerCfg.theme[Boadilla]
+[#=]beamerCfg.colorTheme[wolverine]
+[#=]beamerCfg.fontTheme[structureitalicserif]
+[#require]RCqls/Beamer
+[#preamble]
+\newcommand{\RS}{{\texttt{R}~}}
+\beamertemplateshadingbackground{purple!30}{yellow!40}

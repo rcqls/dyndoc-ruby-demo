@@ -1,0 +1,29 @@
+[#default]minipage
+[#main]
+
+[#??]complet[#=]docs[minipage,table,fig]
+[#??]minipage[#=]docs[minipage]
+[#??]table[#=]docs[table]
+[#??]fig[#=]docs[fig]
+[#??]end[#>]
+{#case]#{docs}
+[#when]minipage[#>]\section{Minipage}
+Ceci est le résultat d'un environnement \verb|minipage|~:\\
+
+\centerline{\fbox{
+\begin{minipage}[c]{.46\linewidth}
+Une minipage de moitié la taille originale. On peut mettre à l'intérieur exactement ce que l'on veut. Cela est très utile pour faire des tableaux de tableaux, placer des figures côte à côte en les plaçant dans un tableau.
+\end{minipage}
+}}
+[#when]table[#>]\section{Tabular}
+
+\begin{tabular}{|c|c|}\hline
+élément 1 & élement 2
+\\\hline
+élément 3 & élément 4
+\\\hline
+\end{tabular}
+[#when]fig[#>]\section{Figure}
+[#<]{#rpng]plot(1:10)[#img]test.png[#}[#>]
+\includegraphics[scale=.5]{rsrc/latex.tex/img/test}
+[#case}
