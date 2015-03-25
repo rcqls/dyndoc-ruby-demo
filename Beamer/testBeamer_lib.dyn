@@ -20,6 +20,6 @@
 \newcommand{\RS}{{\texttt{R}~}}
 \beamertemplateshadingbackground{purple!30}{yellow!40}
 \usebackgroundtemplate{%
-\tikz[overlay,remember picture] \node[opacity=0.3, at=(current page.center)] {
-   \includegraphics[height=\paperheight,width=\paperwidth]{fisher}};
+\tikz[overlay,remember picture] \node[opacity=0.2, at=(current page.center)] {
+   \includegraphics[height=\paperheight,width=\paperwidth]{background}};
 }
