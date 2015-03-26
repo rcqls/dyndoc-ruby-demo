@@ -13,13 +13,14 @@
 [#=]beamerCfg.theme[Boadilla]
 [#=]beamerCfg.colorTheme[wolverine]
 [#=]beamerCfg.fontTheme[structureitalicserif]
+[#=]beamerCfg.background[]
 [#require]RCqls/Beamer
 [#package]
 \usepackage{tikz}
 [#preamble]
 \newcommand{\RS}{{\texttt{R}~}}
 \beamertemplateshadingbackground{purple!30}{yellow!40}
-\usebackgroundtemplate{%
+{#if]#{+?beamerCfg.background}[#>]\usebackgroundtemplate{%
 \tikz[overlay,remember picture] \node[opacity=0.2, at=(current page.center)] {
-   \includegraphics[height=\paperheight,width=\paperwidth]{background}};
-}
+   \includegraphics[height=\paperheight,width=\paperwidth]{#{beamerCfg.background}};
+}[#if}
