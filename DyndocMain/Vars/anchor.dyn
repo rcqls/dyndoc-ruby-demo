@@ -1,0 +1,9 @@
+[#%]This is like a buffer with content published at the end! 
+[#=]::toto+[]
+[#+]::toto[toto]
+[#%]content of toto is "toto" at this step but as an anchor the content would be surprisingly "toto AND toto2"
+[#>]#{toto}
+[#+]::toto[ AND toto2]
+[#%]content of toto is "toto AND toto2" as expected!
+[#>]#{toto}
+
