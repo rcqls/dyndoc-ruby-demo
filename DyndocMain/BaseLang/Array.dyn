@@ -1,0 +1,69 @@
+[#<] TO PUT IN SOME DYNDOC LIBRARY!
+
+{#meth]each.List[#,]fct[]
+[#?]#{0?fct}[#rb>]
+@vars.extract_raw(".content").each do |k,v| #
+  {#>][#=].key[:{k}][#=].value[:{v[:val]}][#yield]default[#>}
+end
+[#?]else[#rb>]
+@vars.extract_raw(".content").each do |k,v| #
+  {#>][#=].key[:{k}][#=].value[:{v[:val]}][#>]{#call]#{fct}[#,]#{.key}[#,]#{.value}[#call}[#>}
+end
+[#meth}
+
+{#meth]each_with_index.Array[#,]fct[]
+[#?]#{0?fct}[#rb>]
+@vars.extract_raw(".content").each_with_index do |v,i| #
+  {#>][#=].index[:{i}][#=].value[:{v[:val]}][#yield]default[#>}
+end
+[#?]else[#rb>]
+@vars.extract_raw(".content").each_with_index do |v,i| #
+  {#>][#=].index[:{i}][#=].value[:{v[:val]}][#>]{#call]#{fct}[#,]#{.index}[#,]#{.value}[#call}[#>}
+end
+[#meth}
+
+{#meth]each.Array[#,]fct[]
+[#?]#{0?fct}[#rb>]
+@vars.extract_raw(".content").each do |v| #
+  {#>][#=].value[:{v[:val]}][#yield]default[#>}
+end
+[#?]else[#rb>]
+@vars.extract_raw(".content").each do |v| #
+  {#>][#=].value[:{v[:val]}][#>]{#call]#{fct}[#,]#{.value}[#call}[#>}
+end
+[#meth}
+
+{#def]toto[#,]key[][#,]value[][#>]#{key}=>#{value}[#nl][#}
+
+[#=]ary[<<[toto]<<[titi]]
+[#=]hash[<<to[TOTO]<<ti[TITI]]
+[#>]
+Array:
+======
+
+-> length: #{#ary}
+-> class: {#class]ary[#}
+-> each_with_index method:
+{#each_with_index]ary[#>]#{.index}=>#{.value}[#nl][#}
+{#each_with_index]ary[#fct]toto[#}
+
+-> each method:
+{#each]ary[#>]#{.value}[#nl][#}
+{#each]ary[#fct]toto[#}
+{#each]ary[#>]{#toto][#value]#{.value}[#}[#each}
+
+List:
+=====
+
+->length: #{#hash}
+->class: {#class]hash[#}
+-> each method:
+{#each]hash[#>]#{.key}=>#{.value}[#nl][#}
+-> each method with function:
+
+{#each]hash[#fct]toto[#each}
+{#each]hash[#,]fct[toto][#each}
+Weird: {#each]hash[#,][toto][#each}
+-> which is equivalent to the previous one!
+{#each]hash[#>]{#toto]#{.key}[#,]#{.value}[#}[#each}
+{#each]hash[#>]{#toto][#key]#{.key}[#value]#{.value}[#}[#each}

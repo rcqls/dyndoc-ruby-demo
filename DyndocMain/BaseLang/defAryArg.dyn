@@ -1,0 +1,18 @@
+
+Function with ary argument:
+
+{#def]toto[#,]ary[][#>]#{ary.toto}[#}
+
+{#toto][#ary][<<toto[titi]][#}
+
+{#toto][<<toto[titi2]][#}
+
+Function with default ary argument:
+
+{#def]totoWithDefault[#,]ary[<<toto[tata]][#>]#{ary.toto}[#}
+
+{#totoWithDefault#}
+
+{#totoWithDefault][#ary][<<toto[TATA]][#}
+
+{#totoWithDefault][#ary.toto]TATA2[#}

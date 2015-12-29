@@ -1,0 +1,7 @@
+[
+	{
+		:source=>"%Array.dyn", 
+		:cmd=> "dyn", 
+		:options=>"-capdf"
+	}
+]
