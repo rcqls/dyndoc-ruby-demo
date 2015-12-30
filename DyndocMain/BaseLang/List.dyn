@@ -1,0 +1,22 @@
+[#=]hash[<<to[TOTO]<<ti[TITI]]
+[#<]{#def]toto[#,]key[][#,]value[][#>]#{key}=>#{value}[#nl][#}
+[#>]
+
+List:
+=====
+
+-> length: #{#hash}
+-> keys: {#listkeys]hash[#}
+-> class: {#class]hash[#}
+-> each method with default block
+{#each]hash[#>]#{.key}=>#{.value}[#nl][#}
+
+-> each method with function:
+
+{#each]hash[#fct]toto[#each}
+{#each]hash[#,]fct[toto][#each}
+Weird: {#each]hash[#,]toto[#each}
+
+-> which is equivalent to version with block
+{#each]hash[#>]{#toto]#{.key}[#,]#{.value}[#}[#each}
+{#each]hash[#>]{#toto][#key]#{.key}[#value]#{.value}[#}[#each}
