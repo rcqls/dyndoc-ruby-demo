@@ -1,4 +1,5 @@
-[#<]{#def]toto[#,]index[][#,]value[][#>]#{index}=>#{value}[#nl][#}
+[#<]{#def]toto[#,]index[][#,]value[][#>]#{index} => #{value}[#nl][#}
+{#def]toto2[#,]value[][#rb>]#{=value}.downcase[#}
 [#=]ary[<<[toto]<<[titi]]
 [#>]
 Array:
@@ -13,11 +14,18 @@ Array:
 
 -> each method:
 {#each]ary[#>]#{.value}[#nl][#}
-{#each]ary[#fct]toto[#}
-{#each]ary[#>]{#toto][#value]#{.value}[#}[#each}
+{#each]ary[#fct]toto2[#}
+{#each]ary[#>]{#toto2][#value]#{.value}[#}[#each}
 
 ->  add (insert) method:
 {#add]ary[#,]tata[#}
 
 -> join method:
 {#join]ary[#,] et [#}
+
+-> map! method:
+{#map]ary[#rb>]#{=.value}.upcase[#}
+{#join]ary[#}
+
+{#map]ary[#fct]toto2[#}
+{#join]ary[#}
