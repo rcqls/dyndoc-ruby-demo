@@ -1,7 +1,7 @@
 [#plugin]list
 [#main][#>]
 {#list]
-[#item][#>]\textbf{Toto}: Toto
+[#item]\textbf{Toto}: Toto
 [#item][#>][\textbf{Tutu}]
 [#>] titi
 	{#list]
@@ -12,6 +12,6 @@
 	[#rb>]print "a"
 	[#>]<\n>toto
 	[#list}
-[#item][#>]TiiiiiToiiii[#%]equivalent to the following[#>]
-[#item][#>]TaaaaTaaa
+[#item]TiiiiiToiiii[#%]equivalent to the following[#>]
+[#item]TaaaaTaaa
 [#list}

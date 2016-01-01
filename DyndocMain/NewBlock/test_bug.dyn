@@ -1,0 +1,10 @@
+[#plugin]BugBlock
+[#main][#>]
+{#jqmTabsNavBar][#tab]Content One[#tab]Content Two[#jqmTabsNavBar}
+
+{#jqmTabsNavBar3][#,]id[toto2][#href]one[#title]One[#tab]
+      Content One
+[#href]two[#title]Two[#tab]
+     Content Two
+[#href]ajax-content-ignore.html[#title]Three
+[#jqmTabsNavBar3}
