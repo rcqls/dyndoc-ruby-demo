@@ -1,0 +1,17 @@
+[#plugin]list
+[#main][#>]
+{#list]
+[#item][#>]\textbf{Toto}: Toto
+[#item][#>][\textbf{Tutu}]
+[#>] titi
+	{#list]
+	[#item][#>]\textbf{SubTutu}: SubRTtutu
+	[#R>>]rnorm(10)[#>]
+	[#item][#>]deuxième item:
+	[#R>>]rnorm(20)
+	[#rb>]print "a"
+	[#>]<\n>toto
+	[#list}
+[#item][#>]TiiiiiToiiii[#%]equivalent to the following[#>]
+[#item][#>]TaaaaTaaa
+[#list}

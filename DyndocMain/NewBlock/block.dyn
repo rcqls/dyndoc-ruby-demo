@@ -1,0 +1,23 @@
+{#newBlck]multiPagesWebSite[#aggregate]menu,link,page
+[#blck]:pre[#=][#rb<]cache(mainPages: []) #Init cache: {mainPages: []}
+[#blck]menu[#do_code]cache[:mainMenu]=blckMngr.parse
+[#blck]link[#do_code]cache[:mainPages] << {:link => blckMngr.parse.strip};
+[#blck]page[#do_code]cache[:mainPages][-1][:page]=blckMngr.parse
+[#blck]:post
+[#=]mainPages[]
+[#=]mainMenu[]
+[#rb<]
+mainMenu=cache[:mainMenu]
+{#<][#+]mainMenu[:{mainMenu}][#<}
+mainPages=cache[:mainPages]
+mainPages.each_with_index do |page,i| #
+    if page[:page]   
+            {#<][#+]mainPages[<div class="switchable" id="mainPage" switch=":{page[:link]}"><\n>:{page[:page]}<\n></div>][#<}
+    end
+end
+[#=]::document.mainMenu[#{mainMenu}]
+[#=]::document.mainPages[<div id="mainPages"><\n>#{mainPages}<\n></div>]
+[#newBlck}
+
+{#def]mainMenuWebSite[#>]#{document.mainMenu}[#}
+{#def]mainPagesWebSite[#>]#{document.mainPages}[#}

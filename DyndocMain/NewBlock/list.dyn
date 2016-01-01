@@ -1,0 +1,8 @@
+{#newBlck]list
+[#blck]:pre[#>]\begin{itemize}
+[#blck]item
+[#pre][#>][\item ]
+[#do_code]blckMngr.parse!
+[#post][#>][<\n>]
+[#blck]:post[#>]\end{itemize}<\n>
+[#}

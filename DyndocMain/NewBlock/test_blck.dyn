@@ -1,0 +1,12 @@
+[#plugin]block
+[#main][#>]
+{#multiPagesWebSite]
+[#menu][#>][
+    MENU CONTENT
+]
+[#link][#>]home[#page][#>]HOME CONTENT
+[#link][#>]home2[#page][#>]HOME2 CONTENT
+[#multiPagesWebSite}
+[#>]
+{#mainMenuWebSite#}
+{#mainPagesWebSite#}
