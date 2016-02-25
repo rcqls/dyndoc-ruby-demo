@@ -1,0 +1,52 @@
+
+
+
+{#newBlck]jqmTabsNavBar[#aggregate]id,href,title,tab
+[#blck]:pre[#rb<]cache(tabs: []) # cache initialized as {tabs: []}
+[#blck]id[#do_code]cache[:id]=blckMngr.parse.strip
+[#blck]href[#do_code]cache[:tabs] << {href: blckMngr.parse.strip}
+[#blck]title[#do_code]cache[:tabs][-1][:title]=blckMngr.parse.strip
+[#blck]tab[#do_code]cache[:tabs][-1][:body]=blckMngr.parse
+[#blck]:post
+[#>]<div data-role="tabs" id="#{id}">
+[#rb<]ntabs=cache[:tabs].length
+Dyndoc.warn :tabs,[ntabs,cache[:tabs]]
+(0...ntabs).each do |i| #
+  href=cache[:tabs][i][:href]
+  id=(href =~ /\.html$/ ? nil : href )
+  if id
+    cache[:tabs][i][:href]="#"+href
+    cache[:tabs][i][:id] = id
+  end
+end
+[#>]<div data-role="navbar"><ul>
+[#rb>]cache[:tabs].each do |tab| #
+  {#>]<li><a href=":{tab[:href]}" data-ajax="false">:{tab[:title]}</a></li>[#nl][#>}
+end
+[#>]</ul></div>
+[#rb>]cache[:tabs].each do |tab| #
+  if tab[:id]
+    {#>]
+      <div id=":{tab[:id]}">
+      :{tab[:body]}
+      </div>
+    [#>}
+  end
+end
+[#>]<div>
+[#newBlck}
+
+{#newBlck]jqmTabsNavBar2[#aggregate]tab
+[#blck]:pre[#rb<]cache(tabs: []);Dyndoc.warn cache
+[#blck]tab[#do_code]cache[:tabs] << {body: blckMngr.parse};Dyndoc.warn cache
+[#blck]:post
+[#=]::tabss[]
+[#rb<]
+tabs=cache[:tabs]
+ntabs=tabs.length
+tabs.each do |tab| #
+  p [:tab,tab]
+  {#<][#+]::tabss[:{tab[:body]}][#<}
+end
+[#>]##{tabss}
+[#newBlck}
