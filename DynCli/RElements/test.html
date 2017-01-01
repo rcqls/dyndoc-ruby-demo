@@ -1,0 +1,219 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Dyndoc Project</title>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+<link href="http://localhost:9292/tools/uv/solarized.css" media="screen,projection,print" rel="Stylesheet" type="text/css" />
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script type="text/javascript">
+var Socket = window.MozWebSocket || window.WebSocket,
+protos = ['dyndoc', 'xmpp'],
+socket = new Socket('ws://localhost:9292/', protos);
+
+var dyndoc_startup_code={},dyndoc_exec_code={};
+
+//TODO: maybe need to run over dyndoc_startup_code keys to initialize any code!
+var open_cmd = function(cmd,id) {
+  add_startup_code(cmd,id);//This allows to add some further command and not only one command
+  socket.addEventListener('open', function() {
+    send_dyndoc_cmd(dyndoc_startup_code[id],id);
+  });
+};
+
+var add_startup_code= function(cmd,id) {
+  //console.log("here:"+dyndoc_startup_code[id]);
+  if(typeof(dyndoc_startup_code[id]) === "undefined") {
+    dyndoc_startup_code[id]="";
+  }
+  dyndoc_startup_code[id]=dyndoc_startup_code[id]+cmd;
+  //console.log("here2:"+dyndoc_startup_code[id]);
+};
+
+var register_dyndoc_exec_code =function(cmd,id) {
+  dyndoc_exec_code[id]=cmd;
+  console.log("register_dyndoc_exec_code-> id:"+id +" & code:"+dyndoc_exec_code[id]);
+};
+
+var send_dyndoc_exec_code = function(id) {
+  console.log("send_dyndoc_exec_code-> id:"+id +" & code:"+dyndoc_exec_code[id]);
+  send_dyndoc_cmd(dyndoc_exec_code[id],id);
+};
+
+var send_dyndoc_cmd = function(content,id) {
+  if (typeof(id)==='undefined') id = "";
+  //console.log("content:"+content);
+  socket.send('__send_cmd__[[dyndoc'+id+']]__' + content + '__[[WS_END_TOKEN]]__');
+};
+
+var send_cmd = function(cmd,id,content) {
+  if (typeof(id)==='undefined') id = "";
+  else if(id != "") id = "#"+id;
+  socket.send('__send_cmd__[['+cmd+id+']]__' + content + '__[[WS_END_TOKEN]]__');
+};
+
+var get_content = function(res) {
+  var data=res.split('__[[WS_END_TOKEN]]__');
+  last=data.pop();
+  result = data.join("");
+  regexp = /^__send_cmd__\[\[([a-zA-Z0-9_]*)((?:\#|\:)[^\]]*)?\]\]__([\s\S]*)/m;
+  res = result.match(regexp);
+  if(res[1] === "dyndoc") {
+    if(typeof(res[2]) === "undefined") {
+      return res[3];
+    } else {
+      $(res[2]).html(res[3]);
+    }
+  } else if( res[1].substring(0, 7) === "jquery_" ) {
+    var cmd=res[1].substring(7);
+    if(cmd.substring(0,5) === "json_") {//json arguments
+      cmd=cmd.substring(5);
+      if(res[2] === "" || (typeof(res[2]) === "undefined")) { //no # in the second part of the cmd
+        $[cmd].apply(null,JSON.parse(res[3])); //$["notify"].apply(null,JSON.parse('[{"title": "ti","message": "hello"},{"delay": 500,"placement": {"from": "top","align": "center"} }]'));
+      } else {
+        var obj=$(res[2]);
+        obj[cmd].apply(obj,JSON.parse(res[3]));
+      }
+    } else {
+      if(typeof(res[2]) === "undefined") { //no # in the second part of the cmd
+        $[cmd](res[3]);
+      } else {
+        $(res[2])[cmd](res[3]); //call of function by name!
+      }
+    }
+  }
+};
+
+//TODO: log to a true logger!
+//var log = function(text) {
+//  $("#content").html(text);
+//};
+
+socket.onerror = function(event) {
+  console.log('ERROR: ' + event.message);
+};
+
+socket.onmessage = function(event) {
+  get_content(event.data);
+};
+
+socket.onclose = function(event) {
+  console.log('CLOSE: ' + event.code + ', ' + event.reason);
+};
+//This function allows to update the code! Useful for other object! "content" can be undefined if unchanged!
+    var dyn_content_viewer_update_code=function(id,content) {
+      if(typeof content !== 'undefined') {
+        //TO REMOVE: $('input[name=dyn_content_code_'+id+']').val(content);
+        register_dyndoc_exec_code(content,id);//put code on the server
+      }
+      //TO REMOVE: var code=$('input[name=dyn_content_code_'+id+']').val();
+      //console.log("update:"+code);
+      //TO REMOVE: send_dyndoc_cmd(code,"#dyn_content_"+id);
+      send_dyndoc_exec_code("#dyn_content_"+id);
+    }
+    //To replace hidden field
+    register_dyndoc_exec_code("[#R>>]menuR","#dyn_content_rviewer");//put code on the server
+
+    open_cmd("[#R>>]menuR","#dyn_content_rviewer");
+//This function allows to update the code! Useful for other object! "content" can be undefined if unchanged!
+    var dyn_content_viewer_update_code=function(id,content) {
+      if(typeof content !== 'undefined') {
+        //TO REMOVE: $('input[name=dyn_content_code_'+id+']').val(content);
+        register_dyndoc_exec_code(content,id);//put code on the server
+      }
+      //TO REMOVE: var code=$('input[name=dyn_content_code_'+id+']').val();
+      //console.log("update:"+code);
+      //TO REMOVE: send_dyndoc_cmd(code,"#dyn_content_"+id);
+      send_dyndoc_exec_code("#dyn_content_"+id);
+    }
+    //To replace hidden field
+    register_dyndoc_exec_code("[#>]{#img]plot((1:10)*(length(menuR$selected)))[#}","#dyn_content_rfig");//put code on the server
+
+    open_cmd("[#>]{#img]plot((1:10)*(length(menuR$selected)))[#}","#dyn_content_rfig");
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+<div class="ui-field-contain">
+    <label for="select-menu-sm">List</label>
+	<select name="select-menu-sm" id="select-menu-sm" data-native-menu="false" multiple="multiple" data-iconpos="left">
+	<option>Choisir un item</option>
+<option value="1">toto</option><option value="2">titi</option><option value="3">tata</option>
+	</select>
+</div>
+
+
+
+
+
+
+
+<div class="ui-field-contain">
+    <label for="select-menu-sm2">List2</label>
+	<select name="select-menu-sm2" id="select-menu-sm2" data-native-menu="false" multiple="multiple" data-iconpos="left">
+	<option>Choose options</option>
+<option value="1">toto</option><option value="2">titi</option><option value="3">tata</option>
+	</select>
+</div>
+
+
+
+
+
+
+
+    <!--input type="hidden" name="dyn_content_code_rviewer" value="[#R>>]menuR" /-->
+    <div id="dyn_content_rviewer" style="margin:10px;width:50%;"></div>
+
+
+
+
+
+
+
+    <!--input type="hidden" name="dyn_content_code_rfig" value="[#>]{#img]plot((1:10)*(length(menuR$selected)))[#}" /-->
+    <div id="dyn_content_rfig" style="margin:10px;width:50%;"></div>
+
+
+
+
+
+
+
+<script type="text/javascript">
+open_cmd("[#R<]menuR <-list(choices=c('toto','titi','tata'),selected=c())");
+$(function () {
+	$("#select-menu-sm").on('change',function () {
+		var sel=$("#select-menu-sm").val();
+		if(sel === null) sel="";
+		send_dyndoc_cmd("[#"+"R<]menuR$selected <- c("+sel+")");//no id!
+
+dyn_content_viewer_update_code("rviewer");
+dyn_content_viewer_update_code("rfig")
+;
+
+	});
+});
+$(function () {
+	$("#select-menu-sm2").on('change',function () {
+		var sel=$("#select-menu-sm2").val();
+		if(sel === null) sel="";
+		send_dyndoc_cmd("[#"+"R<]menuR$selected <- c("+sel+")");//no id!
+		;
+		rviewer,rfig
+	});
+});
+</script>
+</body>
+</html>

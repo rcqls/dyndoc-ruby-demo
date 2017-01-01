@@ -1,0 +1,61 @@
+{#jqmPanel]rcqls-panel[#>]
+  {#jqmMenuListView]
+    rcqls-projects:RCqls Projects
+    rcqls-test-adoc:Test AsciiDoctor
+  [#}
+[#jqmPanel}
+
+{#jqmPage]rcqls-projects
+[#page.title][RCqls Projects]
+[#header.title][RCqls Projects]
+[#header.left]{#jqmHeaderButton]rcqls-panel[#}
+[#footer.title][Projects]
+[#adoc>]
+This page gathers all projects developped by RCqls:
+
+* Dyndoc Project
+* R Packages
+* Teaching Project
+[#jqmPage}
+
+{#jqmPage]rcqls-test-adoc
+[#page.title][Asciidoctor Test]
+[#header.title][Asciidoctor Test]
+[#header.left]{#jqmHeaderButton]rcqls-panel[#}
+[#footer.title][RCqls Projects]
+[#adoc>][
+== TODO
+
+NOTE: An admonition paragraph draws the reader's attention to
+auxiliary information.
+Its purpose is determined by the label
+at the beginning of the paragraph.
+
+Here are the other built-in admonition types:
+
+TIP: Pro tip...
+
+IMPORTANT: Don't forget...
+
+WARNING: Watch out for...
+
+CAUTION: Ensure that...
+
+,===
+Artist,Track,Genre
+
+Baauer,Harlem Shake,Hip Hop
+,===
+
+http://asciidoctor.org - automatic!
+
+http://asciidoctor.org[Asciidoctor]
+
+https://github.com/asciidoctor[Asciidoctor @ *GitHub*]
+
+
+]
+[#>]
+<p>toto2 luvyu</p>
+<a href="#rcqls-panel" class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-btn-mini">Menu</a>
+[#jqmPage}

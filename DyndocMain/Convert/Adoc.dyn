@@ -44,3 +44,5 @@ http://asciidoctor.org - automatic!
 http://asciidoctor.org[Asciidoctor]
 
 https://github.com/asciidoctor[Asciidoctor @ *GitHub*]
+
+Never ends a block with square bracket which is not an end block!!!!

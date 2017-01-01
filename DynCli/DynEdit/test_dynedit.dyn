@@ -1,0 +1,14 @@
+<h1>Test Layout and WebSocket</h1>
+
+{#WebSocket]localhost[#port]9292[#}
+
+<div id="session_main">
+{#DynEditor]id1[#opt.width]90%[#}
+
+{#DynEditor]id2[#}
+
+{#DynEditor]id3[#}
+<div>
+
+[#rb<]
+LayoutMngr << [:js_code_post,'$("#session_main2").hide();']

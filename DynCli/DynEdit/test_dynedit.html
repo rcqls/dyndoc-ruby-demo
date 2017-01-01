@@ -1,0 +1,269 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Dyndoc Project</title>
+<link href="http://localhost:9292/tools/uv/solarized.css" media="screen,projection,print" rel="Stylesheet" type="text/css" />
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://localhost:9292/tools/ace/src/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="http://localhost:9292/tools/ace/src/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+<style type="text/css" media="screen">
+.ace_editor {
+	border: 1px solid lightgray;
+	margin: auto;
+	height: 200px;
+	width: 90%;
+}
+.scrollmargin {
+	height: 80px;
+	text-align: center;
+}
+</style>
+<script type="text/javascript">
+var Socket = window.MozWebSocket || window.WebSocket,
+protos = ['dyndoc', 'xmpp'],
+socket = new Socket('ws://localhost:9292/', protos);
+
+var dyndoc_startup_code={},dyndoc_exec_code={};
+
+//TODO: maybe need to run over dyndoc_startup_code keys to initialize any code!
+var open_cmd = function(cmd,id) {
+  add_startup_code(cmd,id);//This allows to add some further command and not only one command
+  socket.addEventListener('open', function() {
+    send_dyndoc_cmd(dyndoc_startup_code[id],id);
+  });
+};
+
+var add_startup_code= function(cmd,id) {
+  //console.log("here:"+dyndoc_startup_code[id]);
+  if(typeof(dyndoc_startup_code[id]) === "undefined") {
+    dyndoc_startup_code[id]="";
+  }
+  dyndoc_startup_code[id]=dyndoc_startup_code[id]+cmd;
+  //console.log("here2:"+dyndoc_startup_code[id]);
+};
+
+var register_dyndoc_exec_code =function(cmd,id) {
+  dyndoc_exec_code[id]=cmd;
+  console.log("register_dyndoc_exec_code-> id:"+id +" & code:"+dyndoc_exec_code[id]);
+};
+
+var send_dyndoc_exec_code = function(id) {
+  console.log("send_dyndoc_exec_code-> id:"+id +" & code:"+dyndoc_exec_code[id]);
+  send_dyndoc_cmd(dyndoc_exec_code[id],id);
+};
+
+var send_dyndoc_cmd = function(content,id) {
+  if (typeof(id)==='undefined') id = "";
+  //console.log("content:"+content);
+  socket.send('__send_cmd__[[dyndoc'+id+']]__' + content + '__[[WS_END_TOKEN]]__');
+};
+
+var send_cmd = function(cmd,id,content) {
+  if (typeof(id)==='undefined') id = "";
+  else if(id != "") id = "#"+id;
+  socket.send('__send_cmd__[['+cmd+id+']]__' + content + '__[[WS_END_TOKEN]]__');
+};
+
+var get_content = function(res) {
+  var data=res.split('__[[WS_END_TOKEN]]__');
+  last=data.pop();
+  result = data.join("");
+  regexp = /^__send_cmd__\[\[([a-zA-Z0-9_]*)((?:\#|\:)[^\]]*)?\]\]__([\s\S]*)/m;
+  res = result.match(regexp);
+  if(res[1] === "dyndoc") {
+    if(typeof(res[2]) === "undefined") {
+      return res[3];
+    } else {
+      $(res[2]).html(res[3]);
+    }
+  } else if( res[1].substring(0, 7) === "jquery_" ) {
+    var cmd=res[1].substring(7);
+    if(cmd.substring(0,5) === "json_") {//json arguments
+      cmd=cmd.substring(5);
+      if(res[2] === "" || (typeof(res[2]) === "undefined")) { //no # in the second part of the cmd
+        $[cmd].apply(null,JSON.parse(res[3])); //$["notify"].apply(null,JSON.parse('[{"title": "ti","message": "hello"},{"delay": 500,"placement": {"from": "top","align": "center"} }]'));
+      } else {
+        var obj=$(res[2]);
+        obj[cmd].apply(obj,JSON.parse(res[3]));
+      }
+    } else {
+      if(typeof(res[2]) === "undefined") { //no # in the second part of the cmd
+        $[cmd](res[3]);
+      } else {
+        $(res[2])[cmd](res[3]); //call of function by name!
+      }
+    }
+  }
+};
+
+//TODO: log to a true logger!
+//var log = function(text) {
+//  $("#content").html(text);
+//};
+
+socket.onerror = function(event) {
+  console.log('ERROR: ' + event.message);
+};
+
+socket.onmessage = function(event) {
+  get_content(event.data);
+};
+
+socket.onclose = function(event) {
+  console.log('CLOSE: ' + event.code + ', ' + event.reason);
+};
+</script>
+</head>
+<body>
+
+	<h1>Test Layout and WebSocket</h1>
+
+
+
+<div id="session_main">
+
+    <pre id="dyn_editor_id1" style="margin:10px;width:90%;"></pre>
+    <div id="dyn_content_id1" style="margin:10px;width:90%;"></div>
+
+
+
+
+    <pre id="dyn_editor_id2" style="margin:10px;width:50%;"></pre>
+    <div id="dyn_content_id2" style="margin:10px;width:50%;"></div>
+
+
+
+
+    <pre id="dyn_editor_id3" style="margin:10px;width:50%;"></pre>
+    <div id="dyn_content_id3" style="margin:10px;width:50%;"></div>
+
+
+<div>
+
+
+
+<script type="text/javascript">
+var editor_id1 = ace.edit("dyn_editor_id1");
+      editor_id1.setOptions({
+        //autoScrollEditorIntoView: true,
+        enableBasicAutocompletion: true,
+        enableSnippets: true
+      });
+      editor_id1.setTheme("ace/theme/monokai");
+      editor_id1.session.setMode("ace/mode/dyndoc");
+      editor_id1.session.setValue("[#R>>]rnorm(20)");
+      editor_id1.setAutoScrollEditorIntoView(true);
+      editor_id1.setOption("maxLines", 30);
+
+      $(function () {
+
+          $("#dyn_content_id1").dblclick(function(e) {
+            $("#dyn_content_id1").hide();
+            $("#dyn_editor_id1").show();
+            editor_id1.resize();
+            editor_id1.focus();
+          });
+
+          $("#dyn_content_id1").click(function(e) {
+            if (e.shiftKey) {
+              send_dyndoc_cmd(editor_id1.getSession().getValue(),"#dyn_content_id1");
+            }
+          });
+
+          editor_id1.commands.addCommand({
+              name: 'dyndoc',
+              bindKey: {mac: "Command-X", win: "Ctrl-X"},
+              exec: function(editor) {
+                  send_dyndoc_cmd(editor.getSession().getValue(),"#dyn_content_id1");
+                  $("#dyn_editor_id1").hide();
+                  $("#dyn_content_id1").show();
+              }
+          })
+          open_cmd(editor_id1.getSession().getValue(),"#dyn_content_id1");
+          $("#dyn_editor_id1").hide();
+      });
+var editor_id2 = ace.edit("dyn_editor_id2");
+      editor_id2.setOptions({
+        //autoScrollEditorIntoView: true,
+        enableBasicAutocompletion: true,
+        enableSnippets: true
+      });
+      editor_id2.setTheme("ace/theme/monokai");
+      editor_id2.session.setMode("ace/mode/dyndoc");
+      editor_id2.session.setValue("[#R>>]rnorm(20)");
+      editor_id2.setAutoScrollEditorIntoView(true);
+      editor_id2.setOption("maxLines", 30);
+
+      $(function () {
+
+          $("#dyn_content_id2").dblclick(function(e) {
+            $("#dyn_content_id2").hide();
+            $("#dyn_editor_id2").show();
+            editor_id2.resize();
+            editor_id2.focus();
+          });
+
+          $("#dyn_content_id2").click(function(e) {
+            if (e.shiftKey) {
+              send_dyndoc_cmd(editor_id2.getSession().getValue(),"#dyn_content_id2");
+            }
+          });
+
+          editor_id2.commands.addCommand({
+              name: 'dyndoc',
+              bindKey: {mac: "Command-X", win: "Ctrl-X"},
+              exec: function(editor) {
+                  send_dyndoc_cmd(editor.getSession().getValue(),"#dyn_content_id2");
+                  $("#dyn_editor_id2").hide();
+                  $("#dyn_content_id2").show();
+              }
+          })
+          open_cmd(editor_id2.getSession().getValue(),"#dyn_content_id2");
+          $("#dyn_editor_id2").hide();
+      });
+var editor_id3 = ace.edit("dyn_editor_id3");
+      editor_id3.setOptions({
+        //autoScrollEditorIntoView: true,
+        enableBasicAutocompletion: true,
+        enableSnippets: true
+      });
+      editor_id3.setTheme("ace/theme/monokai");
+      editor_id3.session.setMode("ace/mode/dyndoc");
+      editor_id3.session.setValue("[#R>>]rnorm(20)");
+      editor_id3.setAutoScrollEditorIntoView(true);
+      editor_id3.setOption("maxLines", 30);
+
+      $(function () {
+
+          $("#dyn_content_id3").dblclick(function(e) {
+            $("#dyn_content_id3").hide();
+            $("#dyn_editor_id3").show();
+            editor_id3.resize();
+            editor_id3.focus();
+          });
+
+          $("#dyn_content_id3").click(function(e) {
+            if (e.shiftKey) {
+              send_dyndoc_cmd(editor_id3.getSession().getValue(),"#dyn_content_id3");
+            }
+          });
+
+          editor_id3.commands.addCommand({
+              name: 'dyndoc',
+              bindKey: {mac: "Command-X", win: "Ctrl-X"},
+              exec: function(editor) {
+                  send_dyndoc_cmd(editor.getSession().getValue(),"#dyn_content_id3");
+                  $("#dyn_editor_id3").hide();
+                  $("#dyn_content_id3").show();
+              }
+          })
+          open_cmd(editor_id3.getSession().getValue(),"#dyn_content_id3");
+          $("#dyn_editor_id3").hide();
+      });
+$("#session_main2").hide();
+</script>
+</body>
+</html>

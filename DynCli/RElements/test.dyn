@@ -1,0 +1,22 @@
+[#%]Declaration of server websocket[#>]
+{#WebSocket]localhost[#port]9292[#}
+
+[#%]First R code to send to the server and also executed first in this code[#>]
+{#RSrvFirst]menuR <-list(choices=c('toto','titi','tata'),selected=c())[#}
+
+[#%]SelectMulti controlling the R variable menuR above on the server[#>]
+{#RSrvSelectMulti]sm[#label]List[#default][Choisir un item]
+[#menuR][menuR][#js]
+dyn_content_viewer_update_code("rviewer");
+dyn_content_viewer_update_code("rfig")
+[#}
+
+[#%]Better than before since shorter: same thing but with react instead of js[#>]
+
+{#RSrvSelectMulti]sm2[#label]List2[#menuR]menuR[#react]rviewer,rfig[#}
+
+
+[#%]The two following outputs depend on menuR variable and are reactively updated when sm and sm2 are changed by the user![#>]
+{#RSrvEcho]rviewer[#code]menuR[#}
+
+{#RSrvFig]rfig[#code]plot((1:10)*(length(menuR$selected)))[#}
