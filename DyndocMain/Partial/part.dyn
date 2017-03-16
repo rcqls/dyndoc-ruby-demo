@@ -1,0 +1,6 @@
+[#R<]set.seed(10)
+[#>]
+{#part]test[#R>>]
+rnorm(10)
+[#>]
+[#part}
